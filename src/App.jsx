@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { useState, useEffect } from "react";
+import "./App.css";
+import DView from "./view/Desktop/DView";
+import PView from "./view/Phone/PView";
+import PNotesArea from "./components/Phone/PNotesArea";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 function App() {
-  const [count, setCount] = useState(0)
+	const [dimension, setDimension] = useState(window.innerWidth);
+	const [selected, setSelected] = useState("");
+	const [notes, setNotes] = useState([]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	useEffect(() => {
+		setSelected(localStorage.getItem("selected") || "");
+	}, [selected]);
+
+	const checkDimension = () => {
+		setDimension(window.innerWidth);
+	};
+
+	window.addEventListener("resize", checkDimension);
+
+	return (
+		<div className="App">
+			{dimension > 500 ? (
+				<DView />
+			) : (
+				<BrowserRouter>
+					<Routes>
+						<Route
+							path="/"
+							element={<PView selected={selected} setSelected={setSelected} />}
+						/>
+						<Route
+							path="/notes"
+							element={
+								<PNotesArea
+									selected={selected}
+									setSelected={setSelected}
+									notes={notes}
+									setNotes={setNotes}
+								/>
+							}
+						/>
+					</Routes>
+				</BrowserRouter>
+			)}
+		</div>
+	);
 }
 
-export default App
+export default App;
