@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./DView.css";
-import DHome from "../../components/Desktop/DHome";
+import DHome from "../../components/Desktop/Home/DHome";
 import DSidebar from "../../components/Desktop/DSidebar";
 import DNotes from "../../components/Desktop/DNotes";
 
